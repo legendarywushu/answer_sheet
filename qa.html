@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		<title>答题</title>
+		<script
+			src="http://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+		<link rel="stylesheet"
+			href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script
+			src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<style>
+#div-btn {
+	text-align: center;
+}
+
+#btn-ans {
+	text-align: center;
+	width: 150px;
+}
+</style>
+		<script type="text/javascript">
+        $(document).ready(function(){
+        var a,b,c,d;
+        var acount=0;
+        var mydate=new Date();
+   
+        	    /////////////
+        $.ajax({
+         	url: '/edg/getquestion',
+         	type: 'GET',
+         	dataType: 'json',
+           success: function(data,Status){
+          
+           a=data.question1.answer;
+           b=data.question2.answer;
+           c=data.question3.answer;
+           d=data.question4.answer;
+      
+           
+           $('#t1').text(data.question1.question);
+           $('#a11').html(data.question1.optA);
+           $('#a12').html(data.question1.optB);
+           $('#a13').html(data.question1.optC);
+           $('#a14').html(data.question1.optD);
+
+           
+           
+           
+           $('#t2').text(data.question2.question);
+           $('#a21').html(data.question2.optA);
+           $('#a22').html(data.question2.optB);
+           $('#a23').html(data.question2.optC);
+           $('#a24').html(data.question2.optD);
+           
+           
+           $('#t3').text(data.question3.question);
+           $('#a31').html(data.question3.optA);
+           $('#a32').html(data.question3.optB);
+           $('#a33').html(data.question3.optC);
+           $('#a34').html(data.question3.optD);
+           
+           $('#t4').text(data.question4.question);
+           $('#a41').html(data.question4.optA);
+           $('#a42').html(data.question4.optB);
+           $('#a43').html(data.question4.optC);
+           $('#a44').html(data.question4.optD);
+           
+           
+        
+           },
+           error: function() {
+             alert("出错");
+           }
+
+         });
+         
+        		
+        	    $("#btn-ans").click(function(){
+        			var s1 = $("input[name=radiobutton1]:checked").val();
+        			var s2 = $("input[name=radiobutton2]:checked").val();
+        			var s3 = $("input[name=radiobutton3]:checked").val();
+        			var s4 = $("input[name=radiobutton4]:checked").val();
+        			
+        			if(s1===a)
+        		    acount+=25;
+        		    if(s2===b)
+                    acount+=25;
+        			if(s3===c)
+        			acount+=25;
+        			if(s4===d)
+        		    acount+=25;
+        		alert("我的答案为："+s1+s2+s3+s4+"我的得分为"+acount);
+        	
+        	
+        	$.ajax({
+         	url: '/edg/insert',
+         	type: 'POST',
+         	dataType: 'json',
+         	data: {score: acount,
+         	      time:mydate},
+           success: function(data,status){
+              alert("成功");
+           },
+           error: function() {
+             alert("出错");
+           }
+
+         });
+        			
+               
+            });
+        });
+    </script>
+	</head>
+	<body>
+		<div class="container">
+			<h3 align="center">
+				第一题
+			</h3>
+			<p id="t1">
+			</p>
+			<input type="radio" name="radiobutton1" value="A" checked>
+			<span id="a11"></span>
+			<br>
+			<input type="radio" name="radiobutton1" value="B">
+			<span id="a12"></span>
+			<br>
+			<input type="radio" name="radiobutton1" value="C">
+			<span id="a13"></span>
+			<br>
+			<input type="radio" name="radiobutton1" value="D">
+			<span id="a14"></span>
+			<br>
+			<h3 align="center">
+				第二题
+			</h3>
+			<p id="t2"></p>
+			<input type="radio" name="radiobutton2" value="A" checked>
+			<span id="a21"></span>
+			<br>
+			<input type="radio" name="radiobutton2" value="B">
+			<span id="a22"></span>
+			<br>
+			<input type="radio" name="radiobutton2" value="C">
+			<span id="a23"></span>
+			<br>
+			<input type="radio" name="radiobutton2" value="D">
+			<span id="a24"></span>
+			<br>
+			<h3 align="center">
+				第三题
+			</h3>
+			<p id="t3"></p>
+			<input type="radio" name="radiobutton3" value="A" checked>
+			<span id="a31"></span>
+			<br>
+			<input type="radio" name="radiobutton3" value="B">
+			<span id="a32"></span>
+			<br>
+			<input type="radio" name="radiobutton3" value="C">
+			<span id="a33"></span>
+			<br>
+			<input type="radio" name="radiobutton3" value="D">
+			<span id="a34"></span>
+			<br>
+			<h3 align="center">
+				第四题
+			</h3>
+			<p id="t4"></p>
+			<input type="radio" name="radiobutton4" value="A" checked>
+			<span id="a41"></span>
+			<br>
+			<input type="radio" name="radiobutton4" value="B">
+			<span id="a42"></span>
+			<br>
+			<input type="radio" name="radiobutton4" value="C">
+			<span id="a43"></span>
+			<br>
+			<input type="radio" name="radiobutton4" value="D">
+			<span id="a44"></span>
+			<br>
+
+			<br>
+			<div id="div-btn">
+				<button id="btn-ans" type="button" class="btn btn-success">
+					交 卷
+				</button>
+			</div>
+			<br>
+			<br>
+		</div>
+	</body>
+</html>
